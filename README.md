@@ -1,64 +1,134 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Daftar Hadir Online (BPIP)
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Selamat datang di **Daftar Hadir Rapat Online** — aplikasi untuk membuat, mengisi, dan merekap daftar hadir kegiatan secara daring untuk sivitas BPIP.  
 
-## About Laravel
+Akses dimanapun, kapanpun, dengan integrasi SSO-BPIP.  
+Penjadwalan, lembar kehadiran, rekap data, semua dalam satu sistem.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🎯 Fitur
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Pembuatan Lembar Daftar Hadir**  
+  Pengguna dapat membuat lembar kehadiran acara baru, menentukan peserta, waktu, dan pengaturan lainnya.
 
-## Learning Laravel
+- **Akses dengan SSO-BPIP**  
+  Autentikasi terintegrasi dengan Single Sign-On BPIP untuk kenyamanan dan keamanan.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **Rekapitulasi Absen**  
+  Laporan kehadiran berdasarkan peserta, acara, maupun unit kerja.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Antarmuka Web Responsif**  
+  UI yang ramah perangkat mobile maupun desktop.
 
-## Laravel Sponsors
+- **Kelola Data Kegiatan**  
+  Pembuatan, pengeditan, dan penghapusan aktivitas yang memerlukan kehadiran.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+---
 
-### Premium Partners
+## 🛠️ Instalasi & Deploy
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
+Berikut langkah umum untuk menjalankan aplikasi **Daftar Hadir Online**:
 
-## Contributing
+```bash
+# Clone repo
+git clone https://github.com/ardifx01/daftar-hadir-bpip.git
+cd daftar-hadir-bpip
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Install dependencies (jika menggunakan Laravel / PHP)
+composer install
+npm install
+npm run dev  # atau build frontend
 
-## Code of Conduct
+# Konfigurasi
+cp .env.example .env
+# Sesuaikan database, domain, dan pengaturan lain di .env
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+php artisan key:generate
+php artisan migrate --seed  # jika ada seeder
 
-## Security Vulnerabilities
+# Jalankan server lokal atau deploy ke hosting/web server
+php artisan serve   # untuk development
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
+### 📂 Struktur Direktori
+```
+daftarhadir/
+├── app/                  # Logika aplikasi (Controllers, Models, dll.)
+│   ├── Console/          
+│   ├── Exceptions/
+│   ├── Http/             # Controller, Middleware, Request
+│   ├── Models/           # Model Eloquent
+│   └── Providers/        # Service providers
+│
+├── bootstrap/            # Bootstrap Laravel & autoload
+│   └── cache/            # Cache framework
+│
+├── config/               # File konfigurasi (app.php, database.php, dll.)
+│
+├── database/             # Migration, Seeder, Factory
+│   ├── factories/
+│   ├── migrations/
+│   └── seeders/
+│
+├── public/               # Root web server (index.php, assets publik)
+│   ├── css/
+│   ├── js/
+│   └── index.php
+│
+├── resources/            # File sumber (blade templates, js, css, vue/react)
+│   ├── js/
+│   ├── lang/
+│   └── views/            # Blade templates
+│
+├── routes/               # Definisi routing (web.php, api.php)
+│
+├── storage/              # File sementara & cache
+│   ├── app/
+│   ├── framework/
+│   └── logs/
+│
+├── tests/                # Unit & Feature tests
+│
+├── vendor/               # Dependensi composer
+│
+├── .env.example          # Contoh environment config
+├── artisan               # CLI Laravel
+├── composer.json         # Dependency management (PHP)
+├── package.json          # Dependency management (NodeJS)
+├── phpunit.xml           # Konfigurasi testing
+├── server.php            # Entry point server dev
+└── webpack.mix.js        # Laravel Mix (asset bundler)
 
-## License
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 📌 Konsep Pengguna & Role
+
+| Role             | Hak Akses                                        |
+|------------------|-------------------------------------------------|
+| **Admin**        | Kelola acara, peserta, laporan kehadiran        |
+| **Peserta**      | Melakukan absensi (menandai kehadiran)          |
+| **Auditor/Viewer** | Akses laporan & rekap, tanpa bisa mengubah data |
+
+---
+
+## 📬 Kontak & Dukungan
+
+Jika Anda menemukan bug, ingin fitur tambahan, atau berminat berkontribusi:
+
+- ✉️ Email :  [dhiff26@mnkdigital.tech](mailto:dhiff26@mnkdigital.tech) | [pusdatin@bpip.go.id](mailto:pusdatin@bpip.go.id)
+- 🏢 Alamat : Jl. Veteran III No. 2, Jakarta Pusat 10110  
+- ☎️ Telepon : (021) 3505200 
+
+---
+
+## 📄 Lisensi
+
+Aplikasi ini dilisensikan di bawah **MIT License**.  
+Silakan lihat file [`LICENSE`](LICENSE) untuk detail hak & tanggung jawab.
+
+---
+
+© 2022–2025 **Badan Pembinaan Ideologi Pancasila (BPIP)**  
+_All Rights Reserved._
