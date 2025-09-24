@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Http\Controllers\be;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class NarasumberController extends Controller
+{
+    //
+    public function __construct()
+    {
+    }
+
+    public function index()
+    {
+
+        return view('backend.narasumber.index');
+    }
+}

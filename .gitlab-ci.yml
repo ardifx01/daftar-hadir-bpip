@@ -1,0 +1,66 @@
+stages:
+  - build
+  - deploytest
+  - deployprod
+Build:
+  stage: build
+  only:
+    - test
+    - main
+  tags:
+    - $K8S_CLUSTER
+  image: $K8S_IMAGE_BUILD
+  services:
+    - $K8S_SERVICES_BUILD
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_ENDPOINT/$CI_PROJECT_PATH:$CI_COMMIT_REF_SLUG
+    IMAGE_TAG_LATEST: $CI_REGISTRY_ENDPOINT/$CI_PROJECT_PATH:latest
+    CI_JOB_TIMESTAMP: $(date --utc -Iseconds)
+  before_script:
+    - echo "$K8S_IP_GITLAB $K8S_GITLAB" | tee -a /etc/hosts >/dev/null
+    - echo "$K8S_IP_SERVER $K8S_HOSTS" | tee -a /etc/hosts >/dev/null
+    - echo "$K8S_IP_SERVER $CI_REGISTRY_ENDPOINT" | tee -a /etc/hosts >/dev/null
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY_ENDPOINT -u "$CI_REGISTRY_USER" --password-stdin
+    - docker build -t $IMAGE_TAG .
+    - docker push $IMAGE_TAG
+    - ([ "${CI_COMMIT_REF_NAME}" == "master" ] && docker build -t $IMAGE_TAG_LATEST .) || echo "Not latest build"
+    - ([ "${CI_COMMIT_REF_NAME}" == "master" ] && docker push $IMAGE_TAG_LATEST) || echo "Not latest build"
+
+Deploytest:
+  stage: deploytest
+  image: $K8S_IMAGE_DEPLOY
+  only:
+    - test
+  tags:
+    - $K8S_CLUSTER
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_ENDPOINT/$CI_PROJECT_PATH:$CI_COMMIT_REF_SLUG
+    IMAGE_TAG_LATEST: $CI_REGISTRY_ENDPOINT/$CI_PROJECT_PATH:latest
+    CI_JOB_TIMESTAMP: $(date --utc -Iseconds)
+  before_script:
+    - echo "$K8S_IP_SERVER $K8S_HOSTS" | tee -a /etc/hosts >/dev/null
+    - export CI_JOB_TIMESTAMP=$(date --utc -Iseconds)
+  script:
+    - mkdir ~/.rancher
+    - echo "{\"Servers\":{\"rancherDefault\":{\"accessKey\":\"$K8S_ACCESS_KEY\",\"secretKey\":\"$K8S_SECRET_KEY\",\"tokenKey\":\"$K8S_ACCESS_KEY:$K8S_SECRET_KEY\",\"url\":\"$K8S_ENDPOINT\",\"project\":\"$K8S_PROJECT_ID\",\"cacert\":\"\"}},\"CurrentServer\":\"rancherDefault\"}" > ~/.rancher/cli2.json
+    - rancher kubectl --insecure-skip-tls-verify --namespace=$K8S_NAMESPACE_DEV patch deployment $K8S_WORKLOAD_DEV -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"$K8S_WORKLOAD_DEV\",\"image\":\"$IMAGE_TAG\",\"env\":[{\"name\":\"FORCE_RESTART_AT\",\"value\":\"$CI_JOB_TIMESTAMP\"}]}]}}}}"
+
+Deployprod:
+  stage: deployprod
+  image: $K8S_IMAGE_DEPLOY
+  only:
+    - main
+  tags:
+    - $K8S_CLUSTER
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_ENDPOINT/$CI_PROJECT_PATH:$CI_COMMIT_REF_SLUG
+    IMAGE_TAG_LATEST: $CI_REGISTRY_ENDPOINT/$CI_PROJECT_PATH:latest
+    CI_JOB_TIMESTAMP: $(date --utc -Iseconds)
+  before_script:
+    - echo "$K8S_IP_SERVER $K8S_HOSTS" | tee -a /etc/hosts >/dev/null
+    - export CI_JOB_TIMESTAMP=$(date --utc -Iseconds)
+  script:
+    - mkdir ~/.rancher
+    - echo "{\"Servers\":{\"rancherDefault\":{\"accessKey\":\"$K8S_ACCESS_KEY\",\"secretKey\":\"$K8S_SECRET_KEY\",\"tokenKey\":\"$K8S_ACCESS_KEY:$K8S_SECRET_KEY\",\"url\":\"$K8S_ENDPOINT\",\"project\":\"$K8S_PROJECT_ID\",\"cacert\":\"\"}},\"CurrentServer\":\"rancherDefault\"}" > ~/.rancher/cli2.json
+    - rancher kubectl --insecure-skip-tls-verify --namespace=$K8S_NAMESPACE_PROD patch deployment $K8S_WORKLOAD_PROD -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"$K8S_WORKLOAD_PROD\",\"image\":\"$IMAGE_TAG\",\"env\":[{\"name\":\"FORCE_RESTART_AT\",\"value\":\"$CI_JOB_TIMESTAMP\"}]}]}}}}"

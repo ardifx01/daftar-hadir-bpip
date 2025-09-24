@@ -1,0 +1,206 @@
+@extends('backend.layouts.master')
+
+@section('title')
+Dashboard
+@endsection
+
+@section('content')
+
+<section class="section">
+  <div class="section-header">
+    <h1>Dashboard</h1>
+  </div>
+  <div class="row">
+    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+      <div class="card card-statistic-1">
+        <div class="card-icon bg-primary">
+          <i class="fas fa-clipboard-check"></i>
+        </div>
+        <div class="card-wrap">
+          <div class="card-header">
+            <h4>Total Daftar Hadir dibuat</h4>
+          </div>
+          <div class="card-body">
+            {{$data_kegiatan}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+      <div class="card card-statistic-1">
+        <div class="card-icon bg-danger">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="card-wrap">
+          <div class="card-header">
+            <h4>Total Peserta</h4>
+          </div>
+          <div class="card-body">
+            {{$data_peserta}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+      <div class="card card-statistic-1">
+        <div class="card-icon bg-warning">
+          <i class="fas fa-clipboard-check"></i>
+        </div>
+        <div class="card-wrap">
+          <div class="card-header">
+            <h4>Total Daftar Hadir yang diikuti</h4>
+          </div>
+          <div class="card-body">
+            {{$data_list_daftar_hadir}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <div class="card card-statistic-1">
+          <div class="card-icon bg-success">
+            <i class="fas fa-circle"></i>
+          </div>
+          <div class="card-wrap">
+            <div class="card-header">
+              <h4>Online Users</h4>
+            </div>
+            <div class="card-body">
+              47
+            </div>
+          </div>
+        </div>
+      </div> -->
+  </div>
+  <div class="alert alert-info" role="alert" style="font-size:15px">
+    SELAMAT DATANG, DI APLIKASI DAFTAR HADIR RAPAT - BADAN PEMBINAAN IDEOLOGI PANCASILA
+    <br>
+    Aplikasi ini digunakan untuk membuat daftar hadir rapat via online, sehingga data dapat tercatatan di sistem
+  </div>
+  {{-- <div class="row">
+    <div class="col-lg-6">
+      <div class="card-wrap">
+        <div class="card-body">
+          <h3>Daftar Hadir Kegiatan </h3>
+          <p>Pembuatan daftar hadir kegiatan dapat dilakukan pada link di bawah ini</p>
+          <div class="buttons">
+            <a href="/kegiatan/create" class="btn btn-icon icon-left btn-primary">Daftar Hadir Kegiatan</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card-wrap">
+        <div class="card-body">
+          <h3>Daftar Hadir Lama </h3>
+          <p>Daftar hadir yang sudah dibuat pada aplikasi versi sebelumnya dapat diakses pada link di bawah ini</p>
+          <div class="buttons">
+            <a href="{{env('URL_DAFTAR_HADIR_OLD')}}/akses_sivitas/kegiatan" class="btn btn-icon icon-left btn-success">Daftar Hadir Lama</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card-wrap">
+        <div class="card-body">
+          <h3>Daftar Kegiatan Lama </h3>
+          <p>Daftar kegiatan yg sudah pernah diikuti sebelumnya, dapat diakses pada link di bawah ini</p>
+          <div class="buttons">
+            <a href="{{env('URL_DAFTAR_HADIR_OLD')}}/akses_sivitas/kegiatan/presensi_kegiatan" class="btn btn-icon icon-left btn-warning">Daftar Kegiatan Lama</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> --}}
+  <!-- <div class="row">
+      <div class="col-lg-8 col-md-12 col-12 col-sm-12">
+        <div class="card">
+          <div class="card-header">
+            <h4>Daftar Hadir-Ku</h4>
+            <div class="card-header-action">
+            </div>
+          </div>
+          <div class="card-body">
+              <div class="table-responsive">
+                  <table class="table table-striped mb-0">
+                    <thead>
+                      <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          Introduction Laravel 5
+                          <div class="table-links">
+                            in <a href="#">Web Development</a>
+                            <div class="bullet"></div>
+                            <a href="#">View</a>
+                          </div>
+                        </td>
+                        <td>
+                          <a href="#" class="font-weight-600"><img src="{{ asset('backend/assets/img/avatar/avatar-1.png') }}" alt="avatar" width="30" class="rounded-circle mr-1"> Bagus Dwi Cahya</a>
+                        </td>
+                        <td>
+
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-12 col-12 col-sm-12">
+        <div class="card">
+          <div class="card-header">
+            <h4>Peserta Terakhir <br>DH Kegiatan-ku</h4>
+          </div>
+          <div class="card-body">
+            <ul class="list-unstyled list-unstyled-border">
+              <li class="media">
+                <img class="mr-3 rounded-circle" width="50" src="{{ asset('backend/assets/img/avatar/avatar-1.png') }}" alt="avatar">
+                <div class="media-body">
+                  <div class="float-right text-primary">Now</div>
+                  <div class="media-title">Farhan A Mujib</div>
+                  <span class="text-small text-muted">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.</span>
+                </div>
+              </li>
+              <li class="media">
+                <img class="mr-3 rounded-circle" width="50" src="{{ asset('backend/assets/img/avatar/avatar-2.png') }}" alt="avatar">
+                <div class="media-body">
+                  <div class="float-right">12m</div>
+                  <div class="media-title">Ujang Maman</div>
+                  <span class="text-small text-muted">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.</span>
+                </div>
+              </li>
+              <li class="media">
+                <img class="mr-3 rounded-circle" width="50" src="{{ asset('backend/assets/img/avatar/avatar-3.png') }}" alt="avatar">
+                <div class="media-body">
+                  <div class="float-right">17m</div>
+                  <div class="media-title">Rizal Fakhri</div>
+                  <span class="text-small text-muted">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.</span>
+                </div>
+              </li>
+              <li class="media">
+                <img class="mr-3 rounded-circle" width="50" src="{{ asset('backend/assets/img/avatar/avatar-4.png') }}" alt="avatar">
+                <div class="media-body">
+                  <div class="float-right">21m</div>
+                  <div class="media-title">Alfa Zulkarnain</div>
+                  <span class="text-small text-muted">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.</span>
+                </div>
+              </li>
+            </ul>
+            <div class="text-center pt-1 pb-1">
+              <a href="#" class="btn btn-primary btn-lg btn-round">
+                View All
+              </a>
+            </div>
+          </div>
+        </div>
+      </div> -->
+  </div>
+</section>
+@endsection
